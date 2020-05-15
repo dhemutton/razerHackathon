@@ -1,0 +1,23 @@
+{
+  "name": "razerbackend",
+  "version": "1.0.0",
+  "description": "Banking application for razer hackathon",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "dev": "nodemon index.js"
+  },
+  "author": "Matthea Loo",
+  "license": "MIT",
+  "dependencies": {
+    "body-parser": "^1.19.0",
+    "cors": "^2.8.5",
+    "express": "^4.17.1",
+    "pg": "^8.2.0",
+    "pg-hstore": "^2.3.3",
+    "sequelize": "^5.21.9"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.4"
+  }
+}
