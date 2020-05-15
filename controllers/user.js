@@ -50,6 +50,36 @@ module.exports = () => {
       .catch((err) => res.status(400).send(err));
   };
 
+  methods.endorseUser = (req, res) => {
+    User.findOne({
+      where: {
+        id: req.body.userEndorsing,
+      },
+    })
+      .then((user) => {
+        if (!user.endorsers.includes(req.body.endorser)) {
+          user.endorsers.push(req.body.endorser);
+          User.update(
+            {
+              endorsers: req.body.endorsers,
+            },
+            {
+              where: {
+                id: req.body.userEndorsing,
+              },
+            }
+          )
+            .then(() => {
+              res.json(user);
+            })
+            .catch((err) => res.status(400).send(err));
+        } else {
+          res.status(400).send('Already endorsed by the user.')
+        }
+      })
+      .catch((err) => res.status(400).send(err));
+  };
+
   methods.retrieveAll = (req, res) => {
     User.findAll().then((result) => {
       res.json(result);
@@ -69,6 +99,7 @@ module.exports = () => {
         fixed_account_id: req.body.fixed_account_id,
         password: req.body.password,
         contact_number: req.body.contact_number,
+        endorsers: req.body.endorsers,
       },
       {
         where: {
@@ -113,7 +144,7 @@ module.exports = () => {
         res.status(400).send('User does not exist.');
       }
     });
-    console.log(researchuserer);
+    console.log(user);
   };
 
   return methods;

@@ -17,4 +17,8 @@ router.post('/update', card.update);
 // delete card by ID
 router.delete('/delete', card.deleteById);
 
+router.post('/findByUserId', card.findByUserId);
+
+
+
 module.exports = router;

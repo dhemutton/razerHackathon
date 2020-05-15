@@ -29,6 +29,16 @@ module.exports = () => {
       .catch((err) => res.status(400).send(err));
   };
 
+  methods.findByUserId = (req, res) => {
+    Card.findAll({
+      where: {
+        userId: req.query.id,
+      },
+    })
+      .then((result) => res.json(result))
+      .catch((err) => res.status(400).send(err));
+  };
+
   methods.retrieveAll = (req, res) => {
     Card.findAll().then((result) => {
       res.json(result);

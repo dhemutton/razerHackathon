@@ -12,6 +12,15 @@ data.users = [
     credit_score: 1,
     contact_number: '88888888',
   },
+  {
+    first_name: 'User',
+    last_name: 'Two',
+    nric: 'S1234567B',
+    email: 'usertwo@mail.com',
+    password: 'password',
+    credit_score: 2,
+    contact_number: '11111111',
+  },
 ];
 
 data.tags = [

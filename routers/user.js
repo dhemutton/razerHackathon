@@ -17,4 +17,8 @@ router.post('/update', user.update);
 // delete user by ID
 router.delete('/delete', user.deleteById);
 
+router.post('/login', user.login);
+
+router.post('/endorseUser', user.endorseUser);
+
 module.exports = router;
