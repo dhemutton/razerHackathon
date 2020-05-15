@@ -62,7 +62,10 @@ User.associate = (db) => {
   db.User.hasMany(db.Tag, {
     foreignKey: 'userId',
   });
-};
 
+  db.User.hasMany(db.Card, {
+    foreignKey: 'userId',
+  });
+};
 
 module.exports = User;

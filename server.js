@@ -14,14 +14,11 @@ function createServer() {
   // Database setup
   require('./database');
 
-  // app.use('/participants', require('./routers/participant'));
-  // app.use('/researchers', require('./routers/researcher'));
-  // app.use('/studies', require('./routers/study'));
-  // app.use('/organisations', require('./routers/organisation'));
+  
+  app.use('/cards', require('./routers/card'));
   app.use('/tags', require('./routers/tag'));
   app.use('/users', require('./routers/user'));
-  // app.use('/options', require('./routers/option'));
-  // app.use('/questions', require('./routers/question'));
+
 
   return app;
 }

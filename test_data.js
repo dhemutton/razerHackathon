@@ -29,6 +29,17 @@ data.tags = [
   },
 ];
 
+data.cards = [
+  {
+    card_number: '11111111',
+  },
+  {
+    card_number: '22222222',
+  },
+  {
+    card_number: '33333333',
+  },
+];
 
 
 module.exports = data;

@@ -1,19 +1,18 @@
-const Tag = require('../models/Tag');
+const Card = require('../models/Card');
 
 module.exports = () => {
   var methods = {};
 
   methods.create = (req, res) => {
-    const tagData = {
-      title: req.body.title,
-      budget: req.body.budget,
+    const cardData = {
+      card_number: req.body.card_number,
       user_id: req.body.user,
     };
 
-    Tag.create(tagData)
-      .then((tag) => {
-        tag.setUser(tagData.user_id);
-        res.json(tag);
+    Card.create(cardData)
+      .then((card) => {
+        card.setUser(cardData.user_id);
+        res.json(card);
       })
       .catch((err) => {
         res.status(400).send(err);
@@ -21,7 +20,7 @@ module.exports = () => {
   };
 
   methods.findById = (req, res) => {
-    Tag.findOne({
+    Card.findOne({
       where: {
         id: req.query.id,
       },
@@ -31,16 +30,15 @@ module.exports = () => {
   };
 
   methods.retrieveAll = (req, res) => {
-    Tag.findAll().then((result) => {
+    Card.findAll().then((result) => {
       res.json(result);
     });
   };
 
   methods.update = (req, res) => {
-    Tag.update(
+    Card.update(
       {
-        title: req.body.title,
-        budget: req.body.budget,
+        card_number: req.body.card_number,
       },
       {
         where: {
@@ -55,7 +53,7 @@ module.exports = () => {
   };
 
   methods.deleteById = (req, res) => {
-    Tag.findOne({
+    Card.findOne({
       where: {
         id: req.query.id,
       },

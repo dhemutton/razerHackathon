@@ -97,5 +97,24 @@ module.exports = () => {
       .catch((err) => res.status(400).send(err));
   };
 
+  methods.login = (req, res) => {
+    const hashedPw = req.body.password;
+    methods.findByNric(req.body.nric).then((user) => {
+      if (user) {
+        if (bcrypt.compareSync(hashedPw, user.password)) {
+          user.access = jwt.sign(user.dataValues, SECRET_KEY, {
+            expiresIn: 1440,
+          });
+          return res.send(user);
+        } else {
+          res.send('Wrong password');
+        }
+      } else {
+        res.status(400).send('User does not exist.');
+      }
+    });
+    console.log(researchuserer);
+  };
+
   return methods;
 };
