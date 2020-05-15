@@ -53,7 +53,57 @@ module.exports = () => {
   methods.endorseUser = (req, res) => {
     User.findOne({
       where: {
-        id: req.body.userEndorsing,
+        id: req.body.userToEndorse,
+      },
+    })
+      .then((userToEndorse) => {
+        //Add endorser to the user's endorsers
+        if (!userToEndorse.endorsers.includes(req.body.endorser)) {
+          userToEndorse.endorsers.push(req.body.endorser);
+          User.update(
+            {
+              endorsers: req.body.endorsers,
+            },
+            {
+              where: {
+                id: req.body.userToEndorse,
+              },
+            }
+          )
+            //Add to endorser's endorsed array
+            .then(() => {
+              User.findOne({
+                where: {
+                  id: req.body.endorser,
+                },
+              })
+                .then((endorser) => {
+                  endorser.endorsed.push(req.body.userToEndorse)
+                  User.update(
+                    {
+                      endorsed: req.body.endorsed,
+                    },
+                    {
+                      where: {
+                        id: req.body.endorser,
+                      },
+                    }
+                  )
+                  res.json({ userToEndorse, endorser });
+                })
+            })
+            .catch((err) => res.status(400).send(err));
+        } else {
+          res.status(400).send('Already endorsed by the user.')
+        }
+      })
+      .catch((err) => res.status(400).send(err));
+  };
+
+  methods.removeEndorsement = (req, res) => {
+    User.findOne({
+      where: {
+        id: req.body.userToRemoveEndorsement,
       },
     })
       .then((user) => {
@@ -99,7 +149,6 @@ module.exports = () => {
         fixed_account_id: req.body.fixed_account_id,
         password: req.body.password,
         contact_number: req.body.contact_number,
-        endorsers: req.body.endorsers,
       },
       {
         where: {

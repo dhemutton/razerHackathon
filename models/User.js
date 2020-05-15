@@ -55,6 +55,10 @@ const User = db.sequelize.define(
       type: DataTypes.ARRAY(DataTypes.INTEGER),
       defaultValue: []
     },
+    endorsed: {
+      type: DataTypes.ARRAY(DataTypes.INTEGER),
+      defaultValue: []
+    },
   },
   {
     underscored: true,
