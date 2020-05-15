@@ -106,25 +106,45 @@ module.exports = () => {
         id: req.body.userToRemoveEndorsement,
       },
     })
-      .then((user) => {
-        if (!user.endorsers.includes(req.body.endorser)) {
-          user.endorsers.push(req.body.endorser);
+      .then((userToRemoveEndorsement) => {
+        //Remove endorser from the user's endorsers
+        if (userToRemoveEndorsement.endorsers.includes(req.body.unhappyUser)) {
+          userToRemoveEndorsement.endorsers.remove(req.body.unhappyUser);
           User.update(
             {
               endorsers: req.body.endorsers,
             },
             {
               where: {
-                id: req.body.userEndorsing,
+                id: req.body.userToRemoveEndorsement,
               },
             }
           )
+            //Remove from endorser's endorsed array
             .then(() => {
-              res.json(user);
+              User.findOne({
+                where: {
+                  id: req.body.unhappyUser,
+                },
+              })
+                .then((unhappyUser) => {
+                  unhappyUser.endorsed.remove(req.body.userToRemoveEndorsement);
+                  User.update(
+                    {
+                      endorsed: req.body.endorsed,
+                    },
+                    {
+                      where: {
+                        id: req.body.unhappyUser,
+                      },
+                    }
+                  )
+                  res.json({ userToRemoveEndorsement, unhappyUser });
+                })
             })
             .catch((err) => res.status(400).send(err));
         } else {
-          res.status(400).send('Already endorsed by the user.')
+          res.status(400).send('Not endorsed by the user.')
         }
       })
       .catch((err) => res.status(400).send(err));

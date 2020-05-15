@@ -21,4 +21,8 @@ router.post('/login', user.login);
 
 router.post('/endorseUser', user.endorseUser);
 
+router.post('/removeEndorsement', user.removeEndorsement);
+
+
+
 module.exports = router;
