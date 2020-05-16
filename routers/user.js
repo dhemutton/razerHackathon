@@ -31,5 +31,6 @@ router.get('/getLoanAccount', user.getLoanAccount);
 router.post('/createLoanAccount', user.createLoanAccount);
 
 router.post('/createCurrentAccount', user.createCurrentAccount);
+router.post('/createLoanAccount', user.createLoanAccount);
 
 module.exports = router;

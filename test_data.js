@@ -10,6 +10,7 @@ data.users = [
     email: 'userone@mail.com',
     password: 'password',
     contact_number: '88888888',
+    client_id:'8a8e862a7217508901721d34c12b33ee',
   },
   {
     first_name: 'User',
@@ -18,6 +19,7 @@ data.users = [
     email: 'usertwo@mail.com',
     password: 'password',
     contact_number: '11111111',
+    client_id:'8a8e862a7217508901721d34c12b33ee',
   },
   {
     first_name: 'User',
@@ -27,6 +29,7 @@ data.users = [
     credit_score: 100,
     password: 'password',
     contact_number: '11111111',
+    client_id:'8a8e862a7217508901721d34c12b33ee',
   },
 ];
 
