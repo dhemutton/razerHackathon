@@ -32,5 +32,7 @@ router.post('/createLoanAccount', user.createLoanAccount);
 
 router.post('/createCurrentAccount', user.createCurrentAccount);
 router.post('/createLoanAccount', user.createLoanAccount);
+router.post('/uploadDoc', user.uploadDoc);
+router.get('/viewFile', user.viewFile);
 
 module.exports = router;

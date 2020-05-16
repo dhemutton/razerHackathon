@@ -33,18 +33,15 @@ data.users = [
   },
 ];
 
-data.tags = [
+data.documents = [
   {
-    title: 'Entertainment',
-    budget: 10,
+    title: 'Certificate',
   },
   {
-    title: 'Food',
-    budget: 30,
+    title: 'Nric',
   },
   {
-    title: 'Savings',
-    budget: 50,
+    title: 'Passport',
   },
 ];
 

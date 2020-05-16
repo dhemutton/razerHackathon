@@ -51,7 +51,7 @@ module.exports = () => {
   methods.create = (req, res) => {
     const cardData = {
       card_number: req.body.card_number,
-      user_id: req.body.user,
+      user_id: req.body.user_id,
       first_name: req.body.first_name,
       last_name: req.body.last_name,
       expiry_date: req.body.expiry_date,
