@@ -19,7 +19,7 @@ data.users = [
     email: 'usertwo@mail.com',
     password: 'password',
     contact_number: '11111111',
-    client_id:'8a8e862a7217508901721d34c12b33ee',
+    client_id:'8a8e862a7217508901721ec1143e388d',
   },
   {
     first_name: 'User',
@@ -29,7 +29,7 @@ data.users = [
     credit_score: 100,
     password: 'password',
     contact_number: '11111111',
-    client_id:'8a8e862a7217508901721d34c12b33ee',
+    client_id:'8a8e862a7217508901721ec1abe0389d',
   },
 ];
 
