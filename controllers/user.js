@@ -8,6 +8,11 @@ const mambuAuth = {
   password: process.env.MAMBU_PASS
 }
 
+const mambuInstance = axios.create({
+  baseURL: 'https://razerhackathon.sandbox.mambu.com/api',
+  auth: mambuAuth
+});
+
 module.exports = () => {
   var methods = {};
 
@@ -29,7 +34,49 @@ module.exports = () => {
       if (!nric) {
         User.create(userData)
           .then((user) => {
-            res.json(user);
+            let test = {
+              "client": {
+                "firstName": req.body.first_name,
+                "lastName": req.body.last_name,
+                "preferredLanguage": "ENGLISH",
+                "notes": "Enjoys playing RPG",
+                "assignedBranchKey": process.env.MAMBU_BRANCHID,
+              },
+              "idDocuments": [
+                {
+                  "identificationDocumentTemplateKey": "8a8e867271bd280c0171bf7e4ec71b01",
+                  "issuingAuthority": "Immigration Authority of Singapore",
+                  "documentType": "NRIC/Passport Number",
+                  "validUntil": "2021-09-12",
+                  "documentId": req.body.nric,
+                }
+              ],
+              "addresses": [],
+              "customInformation": [
+                {
+                  "value": "Singapore",
+                  "customFieldID": "countryOfBirth"
+        
+                },
+              ]
+            }
+            mambuInstance.post(`/clients`, test)
+              .then((mambuRes) => {
+                //save to the user here
+                console.log(mambuRes.data.client.encodedKey)
+                User.update(
+                  {
+                    client_id: mambuRes.data.client.encodedKey
+                  },
+                  {
+                    where: {
+                      nric: req.body.nric,
+                    },
+                  }
+                )
+                res.json(mambuRes.data)
+              })
+              .catch((err) => res.status(400).send(err));            
           })
           .catch((err) => {
             res.status(400).send(err);
@@ -243,10 +290,7 @@ module.exports = () => {
   }
 
   //************** MAMBU API *****************************/
-  const mambuInstance = axios.create({
-    baseURL: 'https://razerhackathon.sandbox.mambu.com/api',
-    auth: mambuAuth
-  });
+
 
   methods.getCurrentAccountTransactions = (req, res) => {
     mambuInstance.get(`/savings/${req.body.currentAccountId}/transactions`)
@@ -280,51 +324,51 @@ module.exports = () => {
       .catch((err) => res.status(400).send(err));
   }
 
-  methods.createClient = (req, res) => {
-    let test = {
-      "client": {
-        "firstName": "Winnie",
-        "lastName": "Goh",
-        "preferredLanguage": "ENGLISH",
-        "notes": "Enjoys playing RPG",
-        "assignedBranchKey": process.env.MAMBU_BRANCHID,
-      },
-      "idDocuments": [
-        {
-          "identificationDocumentTemplateKey": "8a8e867271bd280c0171bf7e4ec71b01",
-          "issuingAuthority": "Immigration Authority of Singapore",
-          "documentType": "NRIC/Passport Number",
-          "validUntil": "2021-09-12",
-          "documentId": req.body.nric,
-        }
-      ],
-      "addresses": [],
-      "customInformation": [
-        {
-          "value": "Singapore",
-          "customFieldID": "countryOfBirth"
+  // methods.createClient = (req, res) => {
+  //   let test = {
+  //     "client": {
+  //       "firstName": "Winnie",
+  //       "lastName": "Goh",
+  //       "preferredLanguage": "ENGLISH",
+  //       "notes": "Enjoys playing RPG",
+  //       "assignedBranchKey": process.env.MAMBU_BRANCHID,
+  //     },
+  //     "idDocuments": [
+  //       {
+  //         "identificationDocumentTemplateKey": "8a8e867271bd280c0171bf7e4ec71b01",
+  //         "issuingAuthority": "Immigration Authority of Singapore",
+  //         "documentType": "NRIC/Passport Number",
+  //         "validUntil": "2021-09-12",
+  //         "documentId": req.body.nric,
+  //       }
+  //     ],
+  //     "addresses": [],
+  //     "customInformation": [
+  //       {
+  //         "value": "Singapore",
+  //         "customFieldID": "countryOfBirth"
 
-        },
-      ]
-    }
-    mambuInstance.post(`/clients`, test)
-      .then((mambuRes) => {
-        //save to the user here
-        console.log(mambuRes.data.client.encodedKey)
-        User.update(
-          {
-            client_id: mambuRes.data.client.encodedKey
-          },
-          {
-            where: {
-              nric: req.body.nric,
-            },
-          }
-        )
-        res.json(mambuRes.data)
-      })
-      .catch((err) => res.status(400).send(err));
-  }
+  //       },
+  //     ]
+  //   }
+  //   mambuInstance.post(`/clients`, test)
+  //     .then((mambuRes) => {
+  //       //save to the user here
+  //       console.log(mambuRes.data.client.encodedKey)
+  //       User.update(
+  //         {
+  //           client_id: mambuRes.data.client.encodedKey
+  //         },
+  //         {
+  //           where: {
+  //             nric: req.body.nric,
+  //           },
+  //         }
+  //       )
+  //       res.json(mambuRes.data)
+  //     })
+  //     .catch((err) => res.status(400).send(err));
+  // }
 
   methods.createCurrentAccount = (req, res) => {
     let test = {
