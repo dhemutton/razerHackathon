@@ -117,7 +117,7 @@ module.exports = () => {
               })
                 .then((unhappyUser) => {
                   let endorsedArr = unhappyUser.endorsed;
-                  endorsedArr.splice(endorsedArr.indexOf(req.body.userToRemoveEndorsement),1);
+                  endorsedArr.splice(endorsedArr.indexOf(req.body.userToRemoveEndorsement), 1);
                   unhappyUser.update(
                     {
                       endorsed: endorsedArr,
@@ -199,8 +199,36 @@ module.exports = () => {
         res.status(400).send('User does not exist.');
       }
     });
-    console.log(user);
   };
+
+  methods.calculateTotalCreditScore = (req, res) => {
+    let socialCreditScore = 0;
+    methods.findByNric(req.body.nric).then((user) => {
+      if (user) {
+        let promiseArr = [];
+        for (let i = 0; i < user.endorsers.length; i++) {
+          let promise1 =
+            User.findOne({
+              where: {
+                id: user.endorsers[i],
+              },
+            })
+              .then((endorser) => {
+                return endorser.credit_score;
+              })
+          promiseArr.push(promise1)
+        }
+        Promise.all(promiseArr).then((arr) => {
+          for (let i = 0; i < arr.length; i++) {
+            socialCreditScore += arr[i];
+          }
+          res.json(user.credit_score + Math.round(socialCreditScore / arr.length));
+        })
+      } else {
+        res.status(400).send('User does not exist.');
+      }
+    })
+  }
 
   return methods;
 };

@@ -48,9 +48,6 @@ const User = db.sequelize.define(
     fixed_account_id: {
       type: DataTypes.INTEGER,
     },
-    fixed_account_id: {
-      type: DataTypes.INTEGER,
-    },
     endorsers: {
       type: DataTypes.ARRAY(DataTypes.INTEGER),
       defaultValue: []

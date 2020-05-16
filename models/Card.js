@@ -11,7 +11,21 @@ const Card = db.sequelize.define(
     },
     card_number: {
       type: DataTypes.TEXT,
+      allowNull: false,
     },
+    first_name: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
+    last_name: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
+    expiry_date: {
+      type: DataTypes.DATEONLY,
+      allowNull: false,
+    },
+  
   },
   {
     underscored: true,

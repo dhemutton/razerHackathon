@@ -23,6 +23,7 @@ router.post('/endorseUser', user.endorseUser);
 
 router.post('/removeEndorsement', user.removeEndorsement);
 
+router.post('/calculateTotalCreditScore', user.calculateTotalCreditScore);
 
 
 module.exports = router;
