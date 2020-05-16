@@ -29,8 +29,6 @@ router.get('/getCurrentAccountTransactions', user.getCurrentAccountTransactions)
 router.get('/getCurrentAccount', user.getCurrentAccount);
 router.get('/getLoanAccount', user.getLoanAccount);
 
-router.post('/createClient', user.createClient);
-
 router.post('/createCurrentAccount', user.createCurrentAccount);
 
 module.exports = router;
