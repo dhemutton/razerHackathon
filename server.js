@@ -16,7 +16,7 @@ function createServer() {
 
   
   app.use('/cards', require('./routers/card'));
-  app.use('/tags', require('./routers/tag'));
+  app.use('/documents', require('./routers/document'));
   app.use('/users', require('./routers/user'));
 
 

@@ -1,19 +1,20 @@
-const Tag = require('../models/Tag');
+const Document = require('../models/Document');
 
 module.exports = () => {
   var methods = {};
 
   methods.create = (req, res) => {
-    const tagData = {
+    const documentData = {
       title: req.body.title,
-      budget: req.body.budget,
-      user_id: req.body.user,
+      file_path: req.body.file_path,
+      user_id: req.body.user_id,
+
     };
 
-    Tag.create(tagData)
-      .then((tag) => {
-        tag.setUser(tagData.user_id);
-        res.json(tag);
+    Document.create(documentData)
+      .then((document) => {
+        document.setUser(documentData.user_id);
+        res.json(document);
       })
       .catch((err) => {
         res.status(400).send(err);
@@ -21,7 +22,7 @@ module.exports = () => {
   };
 
   methods.findById = (req, res) => {
-    Tag.findOne({
+    Document.findOne({
       where: {
         id: req.query.id,
       },
@@ -30,17 +31,26 @@ module.exports = () => {
       .catch((err) => res.status(400).send(err));
   };
 
+  methods.retrieveAllDocumentsForUser = (req, res) => {
+    Document.findAll({
+      where: {
+        userId: req.query.id,
+      },
+    }).then((result) => {
+      res.json(result);
+    });
+  };
+
   methods.retrieveAll = (req, res) => {
-    Tag.findAll().then((result) => {
+    Document.findAll().then((result) => {
       res.json(result);
     });
   };
 
   methods.update = (req, res) => {
-    Tag.update(
+    Document.update(
       {
         title: req.body.title,
-        budget: req.body.budget,
       },
       {
         where: {
@@ -55,7 +65,7 @@ module.exports = () => {
   };
 
   methods.deleteById = (req, res) => {
-    Tag.findOne({
+    Document.findOne({
       where: {
         id: req.query.id,
       },

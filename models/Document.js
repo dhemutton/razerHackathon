@@ -1,8 +1,8 @@
 const { DataTypes } = require('sequelize');
 const db = require('../database');
 
-const Tag = db.sequelize.define(
-  'Tag',
+const Document = db.sequelize.define(
+  'Document',
   {
     id: {
       type: DataTypes.INTEGER,
@@ -12,23 +12,25 @@ const Tag = db.sequelize.define(
     title: {
       type: DataTypes.TEXT,
     },
-    budget: {
-        type: DataTypes.INTEGER,
+    file_path: {
+        type: DataTypes.TEXT,
+        defaultValue: "404.png"
+
       },
   },
   {
     underscored: true,
     freezetableName: true,
-    tableName: 'tags',
+    tableName: 'documents',
     createdAt: 'created_at',
     updatedAt: 'updated_at',
   }
 );
 
-Tag.associate = (db) => {
-  db.Tag.belongsTo(db.User, {
+Document.associate = (db) => {
+  db.Document.belongsTo(db.User, {
     foreignKey: 'userId',
   });
 };
 
-module.exports = Tag;
+module.exports = Document;

@@ -59,6 +59,10 @@ const User = db.sequelize.define(
       type: DataTypes.ARRAY(DataTypes.INTEGER),
       defaultValue: []
     },
+    profile_picture: {
+      type: DataTypes.STRING,
+      defaultValue: "404.png"
+    }
   },
   {
     underscored: true,
@@ -70,7 +74,7 @@ const User = db.sequelize.define(
 );
 
 User.associate = (db) => {
-  db.User.hasMany(db.Tag, {
+  db.User.hasMany(db.Document, {
     foreignKey: 'userId',
   });
 

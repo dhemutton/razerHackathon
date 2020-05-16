@@ -25,7 +25,7 @@ db.sequelize
   });
 
 db.User = require('./models/User');
-db.Tag = require('./models/Tag');
+db.Document = require('./models/Document');
 db.Card = require('./models/Card');
 
 Object.keys(db).forEach((modelName) => {
@@ -44,9 +44,9 @@ const data = require('./test_data');
 // let tempCriteria;
 db.sequelize.sync({ force: true }).then(() => {
   db.User.bulkCreate(data.users).then((users) => {
-    db.Tag.bulkCreate(data.tags).then((tags) => {
-      for (let i = 0; i < tags.length; i++) {
-        users[0].setTags(tags[i]);
+    db.Document.bulkCreate(data.documents).then((documents) => {
+      for (let i = 0; i < documents.length; i++) {
+        users[0].setDocuments(documents[i]);
       }
       db.Card.bulkCreate(data.cards).then((cards) => {
         for (let i = 0; i < cards.length; i++) {
