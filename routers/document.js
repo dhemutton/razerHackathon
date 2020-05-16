@@ -18,6 +18,8 @@ router.post('/update', document.update);
 router.delete('/delete', document.deleteById);
 
 router.get('/retrieveAllDocumentsForUser', document.retrieveAllDocumentsForUser);
+router.post('/uploadDoc', document.uploadDoc);
+router.get('/viewFile', document.viewFile);
 
 
 

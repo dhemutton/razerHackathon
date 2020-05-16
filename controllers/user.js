@@ -2,6 +2,19 @@ const User = require('../models/User');
 const axios = require('axios');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
+var fileName = '';
+var path = require('path');
+const multer = require('multer');
+const store = multer.diskStorage({
+    destination: function(req, file, cb) {
+        cb(null, './uploads/profilepics');
+    },
+    filename: function(req, file, cb) {
+        cb(null, file.originalname+'.'+file.mimetype.split('/')[1]);
+        fileName = file.originalname+'.'+file.mimetype.split('/')[1];
+    }
+});
+var upload = multer({storage:store}).single('file');
 
 const mambuAuth = {
   username: process.env.MAMBU_USER,
@@ -500,7 +513,35 @@ module.exports = () => {
       .catch((err) => res.status(400).send(err));
   }
 
+  methods.uploadDoc = (req, res) => {
+    console.log('uploading');
+    upload(req, res, function(err) {
+        if(err) {
+            console.log(err);
+             res.status(500).json({error: err})
+        }
+        console.log(req.body);
+        User.findOne({
+            where: {id: req.body.id}
+        }).then(
+            user => {
+              user.update(
+                    {profile_picture: fileName}
+                )
+                res.json('success');
+                fileName = '';
+            }
+        )
+    });
+  }
 
+  methods.viewFile = (req, res) => {
+    params = req.query.file_path
+    console.log(params)
+    filepath = path.join(__dirname, '../uploads/profilepics/') + params;
+    console.log(filepath);
+    res.sendFile(filepath);
+  }  
 
 
   return methods;

@@ -1,7 +1,51 @@
 const Document = require('../models/Document');
 
+var fileName = '';
+var path = require('path');
+const multer = require('multer');
+const store = multer.diskStorage({
+    destination: function(req, file, cb) {
+        cb(null, './uploads/documents');
+    },
+    filename: function(req, file, cb) {
+        cb(null, file.originalname+'.'+file.mimetype.split('/')[1]);
+        fileName = file.originalname+'.'+file.mimetype.split('/')[1];
+    }
+});
+var upload = multer({storage:store}).single('file');
+
 module.exports = () => {
   var methods = {};
+
+  methods.uploadDoc = (req, res) => {
+    console.log('uploading');
+    upload(req, res, function(err) {
+        if(err) {
+            console.log(err);
+             res.status(500).json({error: err})
+        }
+        console.log(req.body);
+        Document.findOne({
+            where: {id: req.body.id}
+        }).then(
+            document => {
+              document.update(
+                    {file_path: fileName}
+                )
+                res.json('success');
+                fileName = '';
+            }
+        )
+    });
+  }
+
+  methods.viewFile = (req, res) => {
+    params = req.query.file_path
+    console.log(params)
+    filepath = path.join(__dirname, '../uploads/documents/') + params;
+    console.log(filepath);
+    res.sendFile(filepath);
+  }  
 
   methods.create = (req, res) => {
     const documentData = {
