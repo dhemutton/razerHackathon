@@ -9,7 +9,6 @@ const visaAuth = {
 const visahttpsAgent = new https.Agent(
   {
     cert: fs.readFileSync('./cert.pem'),
-    ca: fs.readFileSync('./ca.crt'),
     key: fs.readFileSync('./key.pem'),
     keepAlive: true,
   });
@@ -35,11 +34,9 @@ module.exports = () => {
 
     visaInstance.post(`/cards`, test)
       .then((visaRes) => {
-        console.log(visaRes)
-        res.json(visaRes.data);
+        res.json(visaRes.data.resource.cards[0].cardId);
       }).catch((err) => {
-        res.send(err);
-        // res.status(400);
+        res.status(400).send(err.message);
       });
   }
 
