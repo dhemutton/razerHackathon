@@ -226,7 +226,7 @@ module.exports = () => {
           for (let i = 0; i < arr.length; i++) {
             socialCreditScore += arr[i];
           }
-          res.json(user.credit_score + Math.round(socialCreditScore / arr.length));
+          res.json(Math.min(user.credit_score + Math.round(0.1*(socialCreditScore / arr.length)),100));
         })
       } else {
         res.status(400).send('User does not exist.');

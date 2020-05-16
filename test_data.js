@@ -24,6 +24,7 @@ data.users = [
     last_name: 'Three',
     nric: 'S1234567C',
     email: 'usertwo@mail.com',
+    credit_score: 100,
     password: 'password',
     contact_number: '11111111',
   },
