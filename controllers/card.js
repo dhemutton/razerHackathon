@@ -1,4 +1,21 @@
 const Card = require('../models/Card');
+var fs = require('fs');
+const axios = require('axios');
+const https = require('https');
+
+// req.post(
+//   { uri: "https://sandbox.api.visa.com/…", 
+//   key: fs.readFileSync(keyFile), 
+//   cert: fs.readFileSync(certificateFile), 
+//   ca: fs.readFileSync(caFile),    
+//   headers: { 'Content-Type': 'application/json', 'Accept': 'application/json', 'Authorization': 'Basic ' + new Buffer(userId + ':' + password).toString('base64') },
+//   body: data }, 
+//   function (error, response, body) { … });
+//   const options = {
+//     key: fs.readFileSync('./../key.pem'),
+//     cert: fs.readFileSync('./../cert.pem')
+//   };
+
 
 module.exports = () => {
   var methods = {};

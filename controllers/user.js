@@ -245,7 +245,7 @@ module.exports = () => {
           user.access = jwt.sign(user.dataValues, process.env.SECRET_KEY, {
             expiresIn: 1440,
           });
-          return res.send(user);
+          return res.send(user.access);
         } else {
           res.send('Wrong password');
         }
