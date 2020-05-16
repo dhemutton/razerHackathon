@@ -9,7 +9,6 @@ data.users = [
     nric: 'S1234567A',
     email: 'userone@mail.com',
     password: 'password',
-    credit_score: 5,
     contact_number: '88888888',
   },
   {
@@ -18,7 +17,6 @@ data.users = [
     nric: 'S1234567B',
     email: 'usertwo@mail.com',
     password: 'password',
-    credit_score: 5,
     contact_number: '11111111',
   },
   {
@@ -27,7 +25,6 @@ data.users = [
     nric: 'S1234567C',
     email: 'usertwo@mail.com',
     password: 'password',
-    credit_score: 5,
     contact_number: '11111111',
   },
 ];
