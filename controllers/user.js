@@ -65,11 +65,6 @@ module.exports = () => {
             {
               endorsers: endorsersArr,
             },
-            {
-              where: {
-                id: req.body.userToEndorse,
-              },
-            }
           )
             //Add to endorser's endorsed array
             .then(() => {
@@ -85,11 +80,6 @@ module.exports = () => {
                     {
                       endorsed: endorsedArr,
                     },
-                    {
-                      where: {
-                        id: req.body.endorser,
-                      },
-                    }
                   )
                   res.json({ endorser, userToEndorse });
                 }).catch((err) => res.status(400).send(err));
@@ -111,16 +101,12 @@ module.exports = () => {
       .then((userToRemoveEndorsement) => {
         //Remove endorser from the user's endorsers
         if (userToRemoveEndorsement.endorsers.includes(req.body.unhappyUser)) {
-          userToRemoveEndorsement.endorsers.remove(req.body.unhappyUser);
-          User.update(
+          let endorsersArr = userToRemoveEndorsement.endorsers;
+          endorsersArr.splice(endorsersArr.indexOf(req.body.unhappyUser), 1);
+          userToRemoveEndorsement.update(
             {
-              endorsers: req.body.endorsers,
+              endorsers: endorsersArr,
             },
-            {
-              where: {
-                id: req.body.userToRemoveEndorsement,
-              },
-            }
           )
             //Remove from endorser's endorsed array
             .then(() => {
@@ -130,16 +116,12 @@ module.exports = () => {
                 },
               })
                 .then((unhappyUser) => {
-                  unhappyUser.endorsed.remove(req.body.userToRemoveEndorsement);
-                  User.update(
+                  let endorsedArr = unhappyUser.endorsed;
+                  endorsedArr.splice(endorsedArr.indexOf(req.body.userToRemoveEndorsement),1);
+                  unhappyUser.update(
                     {
-                      endorsed: req.body.endorsed,
+                      endorsed: endorsedArr,
                     },
-                    {
-                      where: {
-                        id: req.body.unhappyUser,
-                      },
-                    }
                   )
                   res.json({ userToRemoveEndorsement, unhappyUser });
                 })
