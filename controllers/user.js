@@ -1,4 +1,9 @@
 const User = require('../models/User');
+const axios = require('axios');
+const mambuAuth = {
+  username: process.env.MAMBU_USER,
+  password: process.env.MAMBU_PASS
+}
 
 module.exports = () => {
   var methods = {};
@@ -230,5 +235,18 @@ module.exports = () => {
     })
   }
 
+  //************** MAMBU API *****************************/
+  const mambuInstance = axios.create({
+    baseURL: 'https://razerhackathon.sandbox.mambu.com/api',
+    auth: mambuAuth
+  });
+
+  methods.getCurrentAccountTransactions = (req, res) => {
+    mambuInstance.get('/savings/CRTC897/transactions')
+      .then((mambuRes) => {
+        res.json(mambuRes.data)
+      })
+      .catch((err) => res.status(400).send(err));
+  }
   return methods;
 };

@@ -25,5 +25,6 @@ router.post('/removeEndorsement', user.removeEndorsement);
 
 router.post('/calculateTotalCreditScore', user.calculateTotalCreditScore);
 
+router.get('/getCurrentAccountTransactions', user.getCurrentAccountTransactions);
 
 module.exports = router;
