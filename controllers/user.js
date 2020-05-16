@@ -212,7 +212,8 @@ module.exports = () => {
     let socialCreditScore = 0;
     methods.findByNric(req.body.nric).then((user) => {
       if (user) {
-        let promiseArr = [];
+        if (user.endorsers.length!=0){
+          let promiseArr = [];
         for (let i = 0; i < user.endorsers.length; i++) {
           let promise1 =
             User.findOne({
@@ -231,6 +232,10 @@ module.exports = () => {
           }
           res.json(Math.min(user.credit_score + Math.round(0.1*(socialCreditScore / arr.length)),100));
         })
+        } else {
+          res.json(Math.min(user.credit_score,100));
+        }
+        
       } else {
         res.status(400).send('User does not exist.');
       }
