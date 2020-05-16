@@ -18,6 +18,7 @@ router.post('/update', card.update);
 router.delete('/delete', card.deleteById);
 
 router.post('/findByUserId', card.findByUserId);
+router.get('/generateVisaCard', card.generateVisaCard);
 
 
 

@@ -2,23 +2,46 @@ const Card = require('../models/Card');
 var fs = require('fs');
 const axios = require('axios');
 const https = require('https');
+const visaAuth = {
+  username: process.env.VISA_USER,
+  password: process.env.VISA_PASS
+}
+const visahttpsAgent = new https.Agent(
+  {
+    cert: fs.readFileSync('./cert.pem'),
+    ca: fs.readFileSync('./ca.crt'),
+    key: fs.readFileSync('./key.pem'),
+    keepAlive: true,
+  });
 
-// req.post(
-//   { uri: "https://sandbox.api.visa.com/…", 
-//   key: fs.readFileSync(keyFile), 
-//   cert: fs.readFileSync(certificateFile), 
-//   ca: fs.readFileSync(caFile),    
-//   headers: { 'Content-Type': 'application/json', 'Accept': 'application/json', 'Authorization': 'Basic ' + new Buffer(userId + ':' + password).toString('base64') },
-//   body: data }, 
-//   function (error, response, body) { … });
-//   const options = {
-//     key: fs.readFileSync('./../key.pem'),
-//     cert: fs.readFileSync('./../cert.pem')
-//   };
-
+const visaInstance = axios.create({
+  baseURL: 'https://sandbox.api.visa.com/dcas/cardservices/v1',
+  auth: visaAuth,
+  httpsAgent: visahttpsAgent
+});
 
 module.exports = () => {
   var methods = {};
+
+  methods.generateVisaCard = (req, res) => {
+    let test = {
+      "cardIdModel": [
+        {
+          "pan": "4883836336860016",
+          "lookUpBalances": true
+        }
+      ]
+    }
+
+    visaInstance.post(`/cards`, test)
+      .then((visaRes) => {
+        console.log(visaRes)
+        res.json(visaRes.data);
+      }).catch((err) => {
+        res.send(err);
+        // res.status(400);
+      });
+  }
 
   methods.create = (req, res) => {
     const cardData = {
