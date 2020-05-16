@@ -40,10 +40,22 @@ module.exports = () => {
       });
   }
 
+  methods.getCardTransactionHistory = (req, res) => {
+    visaInstance.get(`/cards/${req.body.card_number}/transactions`)
+      .then((visaRes) => {
+        res.json(visaRes.data.resource);
+      })
+      .catch((err) => res.status(400).send(err));
+  }
+
   methods.create = (req, res) => {
     const cardData = {
       card_number: req.body.card_number,
       user_id: req.body.user,
+      first_name: req.body.first_name,
+      last_name: req.body.last_name,
+      expiry_date: req.body.expiry_date,
+
     };
 
     Card.create(cardData)
