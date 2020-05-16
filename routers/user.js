@@ -26,6 +26,8 @@ router.post('/removeEndorsement', user.removeEndorsement);
 router.post('/calculateTotalCreditScore', user.calculateTotalCreditScore);
 
 router.get('/getCurrentAccountTransactions', user.getCurrentAccountTransactions);
+router.get('/getCurrentAccount', user.getCurrentAccount);
+router.get('/getLoanAccount', user.getLoanAccount);
 
 router.post('/createClient', user.createClient);
 

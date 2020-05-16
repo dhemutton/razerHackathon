@@ -249,6 +249,24 @@ module.exports = () => {
       .catch((err) => res.status(400).send(err));
   }
 
+  methods.getCurrentAccount = (req, res) => {
+    mambuInstance.get(`/savings/${req.body.currentAccountId}/?`)
+      .then((mambuRes) => {
+        res.json(mambuRes.data)
+      })
+      .catch((err) => res.status(400).send(err));
+  }
+
+  methods.getLoanAccount = (req, res) => {
+    mambuInstance.get(`/loans/${req.body.loanAccountId}/?`)
+      .then((mambuRes) => {
+        res.json(mambuRes.data)
+      })
+      .catch((err) => res.status(400).send(err));
+  }
+
+
+
   methods.createClient = (req, res) => {
     let test = {
       "client": {
@@ -280,16 +298,16 @@ module.exports = () => {
       .then((mambuRes) => {
         //save to the user here
         console.log(mambuRes.data.client.encodedKey)
-          User.update(
-            {
-              client_id: mambuRes.data.client.encodedKey
+        User.update(
+          {
+            client_id: mambuRes.data.client.encodedKey
+          },
+          {
+            where: {
+              nric: req.body.nric,
             },
-            {
-              where: {
-                nric: req.body.nric,
-              },
-            }
-          )
+          }
+        )
         res.json(mambuRes.data)
       })
       .catch((err) => res.status(400).send(err));
@@ -355,16 +373,16 @@ module.exports = () => {
       .then((mambuRes) => {
         //save to the user here
         console.log(mambuRes.data.client.encodedKey)
-          User.update(
-            {
-              client_id: mambuRes.data.client.encodedKey
+        User.update(
+          {
+            client_id: mambuRes.data.client.encodedKey
+          },
+          {
+            where: {
+              nric: req.body.nric,
             },
-            {
-              where: {
-                nric: req.body.nric,
-              },
-            }
-          )
+          }
+        )
         res.json(mambuRes.data)
       })
       .catch((err) => res.status(400).send(err));
@@ -373,43 +391,43 @@ module.exports = () => {
   methods.createLoanAccount = (req, res) => {
     let test = {
       "loanAccount": {
-          "accountHolderType": "CLIENT",
-          "accountHolderKey": req.body.client_id,
-          "productTypeKey": "8a8e867271bd280c0171bf768cc31a89",
-          "assignedBranchKey": process.env.MAMBU_BRANCHID,
-          "loanName": "Student Loan",
-          "loanAmount": req.body.loanAmount,
-          "interestRate": req.body.interestRate,
-          "arrearsTolerancePeriod": "0",
-          "gracePeriod": "0",
-          "repaymentInstallments": req.body.repaymentInstallments,
-          "repaymentPeriodCount": "1",
-          "periodicPayment": "0",
-          "repaymentPeriodUnit": "WEEKS",
-          "disbursementDetails": {
-              "customInformation": [
-                  {
-                      "value": "unique identifier for this transaction",
-                      "customFieldID": "IDENTIFIER_TRANSACTION_CHANNEL_I"
-                  }
-              ]
-          }
+        "accountHolderType": "CLIENT",
+        "accountHolderKey": req.body.client_id,
+        "productTypeKey": "8a8e867271bd280c0171bf768cc31a89",
+        "assignedBranchKey": process.env.MAMBU_BRANCHID,
+        "loanName": "Student Loan",
+        "loanAmount": req.body.loanAmount,
+        "interestRate": req.body.interestRate,
+        "arrearsTolerancePeriod": "0",
+        "gracePeriod": "0",
+        "repaymentInstallments": req.body.repaymentInstallments,
+        "repaymentPeriodCount": "1",
+        "periodicPayment": "0",
+        "repaymentPeriodUnit": "WEEKS",
+        "disbursementDetails": {
+          "customInformation": [
+            {
+              "value": "unique identifier for this transaction",
+              "customFieldID": "IDENTIFIER_TRANSACTION_CHANNEL_I"
+            }
+          ]
+        }
       }
-  }
+    }
     mambuInstance.post(`/loans`, test)
       .then((mambuRes) => {
         //save to the user here
         console.log(mambuRes.data.client.encodedKey)
-          User.update(
-            {
-              loan_account_id: mambuRes.data.client.encodedKey
+        User.update(
+          {
+            loan_account_id: mambuRes.data.client.encodedKey
+          },
+          {
+            where: {
+              client_id: req.body.client_id,
             },
-            {
-              where: {
-                nric: req.body.nric,
-              },
-            }
-          )
+          }
+        )
         res.json(mambuRes.data)
       })
       .catch((err) => res.status(400).send(err));
