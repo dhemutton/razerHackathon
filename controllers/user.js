@@ -155,7 +155,6 @@ module.exports = () => {
         credit_score: req.body.credit_score,
         current_account_id: req.body.current_account_id,
         loan_account_id: req.body.loan_account_id,
-        fixed_account_id: req.body.fixed_account_id,
         password: req.body.password,
         contact_number: req.body.contact_number,
         endorsed: req.body.endorsed,
@@ -257,6 +256,14 @@ module.exports = () => {
       .catch((err) => res.status(400).send(err));
   }
 
+  methods.getLoanAccountTransactions = (req, res) => {
+    mambuInstance.get(`/loans/${req.body.loanAccountId}/transactions`)
+      .then((mambuRes) => {
+        res.json(mambuRes.data)
+      })
+      .catch((err) => res.status(400).send(err));
+  }
+
   methods.getLoanAccount = (req, res) => {
     mambuInstance.get(`/loans/${req.body.loanAccountId}/?`)
       .then((mambuRes) => {
@@ -264,8 +271,6 @@ module.exports = () => {
       })
       .catch((err) => res.status(400).send(err));
   }
-
-
 
   methods.createClient = (req, res) => {
     let test = {
@@ -337,6 +342,16 @@ module.exports = () => {
     mambuInstance.post(`/savings`, test)
       .then((mambuRes) => {
         //save to the user here
+        User.update(
+          {
+            current_account_id: mambuRes.data.client.encodedKey
+          },
+          {
+            where: {
+              nric: req.body.nric,
+            },
+          }
+        )
         res.json(mambuRes.data)
       })
       .catch((err) => res.status(400).send(err));

@@ -41,14 +41,14 @@ const User = db.sequelize.define(
     },
     credit_score: {
       type: DataTypes.INTEGER,
+      defaultValue: 5,
+      min: 0,
+      max: 100
     },
     current_account_id: {
       type: DataTypes.INTEGER,
     },
     loan_account_id: {
-      type: DataTypes.INTEGER,
-    },
-    fixed_account_id: {
       type: DataTypes.INTEGER,
     },
     endorsers: {
