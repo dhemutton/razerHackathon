@@ -59,10 +59,11 @@ module.exports = () => {
       .then((userToEndorse) => {
         //Add endorser to the user's endorsers
         if (!userToEndorse.endorsers.includes(req.body.endorser)) {
-          userToEndorse.endorsers.push(req.body.endorser);
-          User.update(
+          let endorsersArr = userToEndorse.endorsers;
+          endorsersArr.push(req.body.endorser);
+          userToEndorse.update(
             {
-              endorsers: req.body.endorsers,
+              endorsers: endorsersArr,
             },
             {
               where: {
@@ -78,10 +79,11 @@ module.exports = () => {
                 },
               })
                 .then((endorser) => {
-                  endorser.endorsed.push(req.body.userToEndorse)
-                  User.update(
+                  let endorsedArr = endorser.endorsed;
+                  endorsedArr.push(req.body.userToEndorse)
+                  endorser.update(
                     {
-                      endorsed: req.body.endorsed,
+                      endorsed: endorsedArr,
                     },
                     {
                       where: {
@@ -89,8 +91,8 @@ module.exports = () => {
                       },
                     }
                   )
-                  res.json({ userToEndorse, endorser });
-                })
+                  res.json({ endorser, userToEndorse });
+                }).catch((err) => res.status(400).send(err));
             })
             .catch((err) => res.status(400).send(err));
         } else {
@@ -169,6 +171,8 @@ module.exports = () => {
         fixed_account_id: req.body.fixed_account_id,
         password: req.body.password,
         contact_number: req.body.contact_number,
+        endorsed: req.body.endorsed,
+        endorsers: req.body.endorsers,
       },
       {
         where: {
