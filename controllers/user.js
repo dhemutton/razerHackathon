@@ -32,9 +32,10 @@ const mambuInstance = axios.create({
 });
 
 const fwdInstance = axios.create({
-  baseURL: 'https://razerhackathon.sandbox.mambu.com/api',
-  auth: mambuAuth
+  baseURL: 'https://niw1itg937.execute-api.ap-southeast-1.amazonaws.com/Prod/verify',
+  auth: fwdAuth
 });
+
 
 module.exports = () => {
   var methods = {};
@@ -392,6 +393,17 @@ module.exports = () => {
   //     })
   //     .catch((err) => res.status(400).send(err));
   // }
+
+  methods.verifyKYC = (req, res) => {
+    let test = {
+      base64image: req.body.base64image,
+    }
+    fwdInstance.post(``, test)
+      .then((fwdRes) => {
+        res.json(fwdRes)
+      })        
+      .catch((err) => res.status(400).send(err));
+  }
 
   methods.createCurrentAccount = (req, res) => {
     let test = {
