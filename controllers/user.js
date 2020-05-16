@@ -1,5 +1,8 @@
 const User = require('../models/User');
 const axios = require('axios');
+const bcrypt = require('bcryptjs');
+const jwt = require('jsonwebtoken');
+
 const mambuAuth = {
   username: process.env.MAMBU_USER,
   password: process.env.MAMBU_PASS
@@ -192,7 +195,7 @@ module.exports = () => {
     methods.findByNric(req.body.nric).then((user) => {
       if (user) {
         if (bcrypt.compareSync(hashedPw, user.password)) {
-          user.access = jwt.sign(user.dataValues, SECRET_KEY, {
+          user.access = jwt.sign(user.dataValues, process.env.SECRET_KEY, {
             expiresIn: 1440,
           });
           return res.send(user);
