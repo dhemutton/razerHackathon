@@ -46,10 +46,10 @@ const User = db.sequelize.define(
       max: 100
     },
     current_account_id: {
-      type: DataTypes.INTEGER,
+      type: DataTypes.STRING,
     },
     loan_account_id: {
-      type: DataTypes.INTEGER,
+      type: DataTypes.STRING,
     },
     endorsers: {
       type: DataTypes.ARRAY(DataTypes.INTEGER),

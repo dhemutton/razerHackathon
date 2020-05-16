@@ -28,6 +28,7 @@ router.post('/calculateTotalCreditScore', user.calculateTotalCreditScore);
 router.get('/getCurrentAccountTransactions', user.getCurrentAccountTransactions);
 router.get('/getCurrentAccount', user.getCurrentAccount);
 router.get('/getLoanAccount', user.getLoanAccount);
+router.post('/createLoanAccount', user.createLoanAccount);
 
 router.post('/createCurrentAccount', user.createCurrentAccount);
 

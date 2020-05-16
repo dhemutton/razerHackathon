@@ -396,7 +396,7 @@ module.exports = () => {
         //save to the user here
         User.update(
           {
-            current_account_id: mambuRes.data.client.encodedKey
+            current_account_id: mambuRes.data.client.id
           },
           {
             where: {
@@ -484,10 +484,10 @@ module.exports = () => {
     mambuInstance.post(`/loans`, test)
       .then((mambuRes) => {
         //save to the user here
-        console.log(mambuRes.data.client.encodedKey)
+        console.log(mambuRes.data.loanAccount.encodedKey)
         User.update(
           {
-            loan_account_id: mambuRes.data.client.encodedKey
+            loan_account_id: mambuRes.data.loanAccount.id
           },
           {
             where: {
