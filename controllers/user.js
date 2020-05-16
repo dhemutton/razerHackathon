@@ -21,7 +21,17 @@ const mambuAuth = {
   password: process.env.MAMBU_PASS
 }
 
+const fwdAuth = {
+  username: process.env.FWD_USER,
+  password: process.env.FWD_PASS
+}
+
 const mambuInstance = axios.create({
+  baseURL: 'https://razerhackathon.sandbox.mambu.com/api',
+  auth: mambuAuth
+});
+
+const fwdInstance = axios.create({
   baseURL: 'https://razerhackathon.sandbox.mambu.com/api',
   auth: mambuAuth
 });
