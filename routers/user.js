@@ -27,4 +27,8 @@ router.post('/calculateTotalCreditScore', user.calculateTotalCreditScore);
 
 router.get('/getCurrentAccountTransactions', user.getCurrentAccountTransactions);
 
+router.post('/createClient', user.createClient);
+
+router.post('/createCurrentAccount', user.createCurrentAccount);
+
 module.exports = router;

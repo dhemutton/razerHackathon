@@ -36,6 +36,9 @@ const User = db.sequelize.define(
     contact_number: {
       type: DataTypes.STRING,
     },
+    client_id: {
+      type: DataTypes.STRING,
+    },
     credit_score: {
       type: DataTypes.INTEGER,
     },

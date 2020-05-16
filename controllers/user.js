@@ -242,11 +242,89 @@ module.exports = () => {
   });
 
   methods.getCurrentAccountTransactions = (req, res) => {
-    mambuInstance.get('/savings/CRTC897/transactions')
+    mambuInstance.get(`/savings/${req.body.currentAccountId}/transactions`)
       .then((mambuRes) => {
         res.json(mambuRes.data)
       })
       .catch((err) => res.status(400).send(err));
   }
+
+  methods.createClient = (req, res) => {
+    let test = {
+      "client": {
+        "firstName": "Winnie",
+        "lastName": "Goh",
+        "preferredLanguage": "ENGLISH",
+        "notes": "Enjoys playing RPG",
+        "assignedBranchKey": process.env.MAMBU_BRANCHID,
+      },
+      "idDocuments": [
+        {
+          "identificationDocumentTemplateKey": "8a8e867271bd280c0171bf7e4ec71b01",
+          "issuingAuthority": "Immigration Authority of Singapore",
+          "documentType": "NRIC/Passport Number",
+          "validUntil": "2021-09-12",
+          "documentId": req.body.nric,
+        }
+      ],
+      "addresses": [],
+      "customInformation": [
+        {
+          "value": "Singapore",
+          "customFieldID": "countryOfBirth"
+
+        },
+      ]
+    }
+    mambuInstance.post(`/clients`, test)
+      .then((mambuRes) => {
+        //save to the user here
+        console.log(mambuRes.data.client.encodedKey)
+          User.update(
+            {
+              client_id: mambuRes.data.client.encodedKey
+            },
+            {
+              where: {
+                nric: req.body.nric,
+              },
+            }
+          )
+        res.json(mambuRes.data)
+      })
+      .catch((err) => res.status(400).send(err));
+  }
+
+  methods.createCurrentAccount = (req, res) => {
+    let test = {
+      "savingsAccount": {
+        "name": "Digital Account",
+        "accountHolderType": "CLIENT",
+        "accountHolderKey": req.body.clientId, //this is the encoded key after client creation
+        "accountState": "APPROVED",
+        "productTypeKey": "8a8e878471bf59cf0171bf6979700440",
+        "accountType": "CURRENT_ACCOUNT",
+        "currencyCode": "SGD",
+        "allowOverdraft": "true",
+        "overdraftLimit": "100",
+        "overdraftInterestSettings": {
+          "interestRate": 5 //change this according to credit score
+        },
+        "interestSettings": {
+          "interestRate": "1.25" //change this according to credit score
+        }
+      }
+
+    }
+    mambuInstance.post(`/savings`, test)
+      .then((mambuRes) => {
+        //save to the user here
+        res.json(mambuRes.data)
+      })
+      .catch((err) => res.status(400).send(err));
+  }
+
+
+
   return methods;
 };
