@@ -26,7 +26,7 @@ module.exports = () => {
     let test = {
       "cardIdModel": [
         {
-          "pan": "4883836336860016",
+          "pan": "4169334953890037",
           "lookUpBalances": true
         }
       ]

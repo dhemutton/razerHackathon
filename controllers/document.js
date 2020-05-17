@@ -32,7 +32,7 @@ module.exports = () => {
               document.update(
                     {file_path: fileName}
                 )
-                res.json('success');
+                res.json(res.status(200).send(req.body.file_path));
                 fileName = '';
             }
         )
@@ -50,7 +50,6 @@ module.exports = () => {
   methods.create = (req, res) => {
     const documentData = {
       title: req.body.title,
-      file_path: req.body.file_path,
       user_id: req.body.user_id,
 
     };

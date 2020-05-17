@@ -47,19 +47,19 @@ data.documents = [
 
 data.cards = [
   {
-    card_number: '11111111',
+    card_number: '8d212293-c6bc-4738-afaf-bc0ae5456df5',
     first_name: 'User',
     last_name: 'One',
     expiry_date: Date.parse('2021-08-11T10:00:00.000Z')
   },
   {
-    card_number: '22222222',
+    card_number: '8d212293-c6bc-4738-afaf-bc0ae5456df5',
     first_name: 'User',
     last_name: 'One',
     expiry_date: Date.parse('2021-08-11T10:00:00.000Z')
   },
   {
-    card_number: '33333333',
+    card_number: '8d212293-c6bc-4738-afaf-bc0ae5456df5',
     first_name: 'User',
     last_name: 'One',
     expiry_date: Date.parse('2021-08-11T10:00:00.000Z')
