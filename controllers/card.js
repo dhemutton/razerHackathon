@@ -26,7 +26,7 @@ module.exports = () => {
     let test = {
       "cardIdModel": [
         {
-          "pan": "4883836336860016",
+          "pan": process.env.VISA_PAN3,
           "lookUpBalances": true
         }
       ]

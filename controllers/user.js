@@ -400,7 +400,7 @@ module.exports = () => {
     }
     fwdInstance.post(``, test)
       .then((fwdRes) => {
-        res.json(fwdRes)
+        res.json(fwdRes.data)
       })        
       .catch((err) => res.status(400).send(err));
   }
