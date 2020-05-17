@@ -6,15 +6,15 @@ var fileName = '';
 var path = require('path');
 const multer = require('multer');
 const store = multer.diskStorage({
-    destination: function(req, file, cb) {
-        cb(null, './uploads/profilepics');
-    },
-    filename: function(req, file, cb) {
-        cb(null, file.originalname+'.'+file.mimetype.split('/')[1]);
-        fileName = file.originalname+'.'+file.mimetype.split('/')[1];
-    }
+  destination: function (req, file, cb) {
+    cb(null, './uploads/profilepics');
+  },
+  filename: function (req, file, cb) {
+    cb(null, file.originalname + '.' + file.mimetype.split('/')[1]);
+    fileName = file.originalname + '.' + file.mimetype.split('/')[1];
+  }
 });
-var upload = multer({storage:store}).single('file');
+var upload = multer({ storage: store }).single('file');
 
 const mambuAuth = {
   username: process.env.MAMBU_USER,
@@ -80,7 +80,7 @@ module.exports = () => {
                 {
                   "value": "Singapore",
                   "customFieldID": "countryOfBirth"
-        
+
                 },
               ]
             }
@@ -100,7 +100,7 @@ module.exports = () => {
                 )
                 res.json(mambuRes.data)
               })
-              .catch((err) => res.status(400).send(err));            
+              .catch((err) => res.status(400).send(err));
           })
           .catch((err) => {
             res.status(400).send(err);
@@ -246,6 +246,39 @@ module.exports = () => {
       .catch((err) => res.status(400).send(err));
   };
 
+  methods.punishUser = (req, res) => {
+    methods.findByNric(req.body.nric).then((user) => {
+      user.update(
+        {
+          credit_score: Math.round(0.80 * user.credit_score),
+        },
+      )
+      if (user.endorsers.length != 0) {
+        let promiseArr = [];
+        for (let i = 0; i < user.endorsers.length; i++) {
+          let promise1 =
+            User.findOne({
+              where: {
+                id: user.endorsers[i],
+              },
+            })
+              .then((endorser) => {
+                endorser.update(
+                        {
+                          credit_score: Math.round(0.90 * endorser.credit_score),
+                        },
+                      )
+                return endorser;
+              })
+          promiseArr.push(promise1)
+        }
+        Promise.all(promiseArr).then((arr) => {
+          res.json('Users punished!');
+        })
+      }
+    }).catch((err) => res.status(400).send(err));
+  };
+
   methods.deleteById = (req, res) => {
     User.findOne({
       where: {
@@ -283,30 +316,30 @@ module.exports = () => {
     let socialCreditScore = 0;
     methods.findByNric(req.body.nric).then((user) => {
       if (user) {
-        if (user.endorsers.length!=0){
+        if (user.endorsers.length != 0) {
           let promiseArr = [];
-        for (let i = 0; i < user.endorsers.length; i++) {
-          let promise1 =
-            User.findOne({
-              where: {
-                id: user.endorsers[i],
-              },
-            })
-              .then((endorser) => {
-                return endorser.credit_score;
+          for (let i = 0; i < user.endorsers.length; i++) {
+            let promise1 =
+              User.findOne({
+                where: {
+                  id: user.endorsers[i],
+                },
               })
-          promiseArr.push(promise1)
-        }
-        Promise.all(promiseArr).then((arr) => {
-          for (let i = 0; i < arr.length; i++) {
-            socialCreditScore += arr[i];
+                .then((endorser) => {
+                  return endorser.credit_score;
+                })
+            promiseArr.push(promise1)
           }
-          res.json(Math.min(user.credit_score + Math.round(0.1*(socialCreditScore / arr.length)),100));
-        })
+          Promise.all(promiseArr).then((arr) => {
+            for (let i = 0; i < arr.length; i++) {
+              socialCreditScore += arr[i];
+            }
+            res.json(Math.min(user.credit_score + Math.round(0.1 * (socialCreditScore / arr.length)), 100));
+          })
         } else {
-          res.json(Math.min(user.credit_score,100));
+          res.json(Math.min(user.credit_score, 100));
         }
-        
+
       } else {
         res.status(400).send('User does not exist.');
       }
@@ -400,8 +433,8 @@ module.exports = () => {
     }
     fwdInstance.post(``, test)
       .then((fwdRes) => {
-        res.json({verified: fwdRes.data.qualityCheck.finalDecision, data:fwdRes.data })
-      })        
+        res.json({ verified: fwdRes.data.qualityCheck.finalDecision, data: fwdRes.data })
+      })
       .catch((err) => res.status(400).send(err));
   }
 
@@ -537,23 +570,23 @@ module.exports = () => {
 
   methods.uploadDoc = (req, res) => {
     console.log('uploading');
-    upload(req, res, function(err) {
-        if(err) {
-            console.log(err);
-             res.status(500).json({error: err})
+    upload(req, res, function (err) {
+      if (err) {
+        console.log(err);
+        res.status(500).json({ error: err })
+      }
+      console.log(req.body);
+      User.findOne({
+        where: { id: req.body.id }
+      }).then(
+        user => {
+          user.update(
+            { profile_picture: fileName }
+          )
+          res.json('success');
+          fileName = '';
         }
-        console.log(req.body);
-        User.findOne({
-            where: {id: req.body.id}
-        }).then(
-            user => {
-              user.update(
-                    {profile_picture: fileName}
-                )
-                res.json('success');
-                fileName = '';
-            }
-        )
+      )
     });
   }
 
@@ -563,7 +596,7 @@ module.exports = () => {
     filepath = path.join(__dirname, '../uploads/profilepics/') + params;
     console.log(filepath);
     res.sendFile(filepath);
-  }  
+  }
 
 
   return methods;
