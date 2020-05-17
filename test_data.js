@@ -9,6 +9,7 @@ data.users = [
     nric: 'S1234567A',
     email: 'userone@mail.com',
     password: 'password',
+    credit_score: 50,
     contact_number: '88888888',
     client_id:'8a8e862a7217508901721d34c12b33ee',
   },
@@ -18,6 +19,7 @@ data.users = [
     nric: 'S1234567B',
     email: 'usertwo@mail.com',
     password: 'password',
+    credit_score: 50,
     contact_number: '11111111',
     client_id:'8a8e862a7217508901721ec1143e388d',
   },
@@ -26,7 +28,7 @@ data.users = [
     last_name: 'Three',
     nric: 'S1234567C',
     email: 'usertwo@mail.com',
-    credit_score: 100,
+    credit_score: 50,
     password: 'password',
     contact_number: '11111111',
     client_id:'8a8e862a7217508901721ec1abe0389d',
@@ -53,13 +55,13 @@ data.cards = [
     expiry_date: Date.parse('2021-08-11T10:00:00.000Z')
   },
   {
-    card_number: '8d212293-c6bc-4738-afaf-bc0ae5456df5',
+    card_number: '7a353971-l4uo-9877-algd-lz1fe25349i9',
     first_name: 'User',
     last_name: 'One',
     expiry_date: Date.parse('2021-08-11T10:00:00.000Z')
   },
   {
-    card_number: '8d212293-c6bc-4738-afaf-bc0ae5456df5',
+    card_number: '7a353971-l4uo-9877-algd-bp0df3321ly2',
     first_name: 'User',
     last_name: 'One',
     expiry_date: Date.parse('2021-08-11T10:00:00.000Z')

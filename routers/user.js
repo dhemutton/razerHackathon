@@ -34,5 +34,8 @@ router.post('/createCurrentAccount', user.createCurrentAccount);
 router.post('/createLoanAccount', user.createLoanAccount);
 router.post('/uploadDoc', user.uploadDoc);
 router.get('/viewFile', user.viewFile);
+router.post('/punishUser', user.punishUser);
+
+router.post('/verifyKYC', user.verifyKYC);
 
 module.exports = router;
