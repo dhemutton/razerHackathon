@@ -433,6 +433,16 @@ module.exports = () => {
     }
     fwdInstance.post(``, test)
       .then((fwdRes) => {
+        User.update(
+          {
+            isVerified: fwdRes.data.qualityCheck.finalDecision
+          },
+          {
+            where: {
+              nric: req.body.nric,
+            },
+          }
+        )
         res.json({ verified: fwdRes.data.qualityCheck.finalDecision, data: fwdRes.data })
       })
       .catch((err) => res.status(400).send(err));

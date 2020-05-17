@@ -59,6 +59,10 @@ const User = db.sequelize.define(
       type: DataTypes.ARRAY(DataTypes.INTEGER),
       defaultValue: []
     },
+    isVerified: {
+      type: DataTypes.BOOLEAN,
+      defaultValue: false
+    },
     profile_picture: {
       type: DataTypes.STRING,
       defaultValue: "404.png"
